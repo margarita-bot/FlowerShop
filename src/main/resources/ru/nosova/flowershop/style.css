@@ -1,0 +1,117 @@
+/* Общий фон */
+.root {
+    -fx-background-color: linear-gradient(to bottom, #fffafa, #fceef3);
+    -fx-font-family: "Segoe UI";
+    -fx-text-fill: #444444;
+}
+
+/* Кнопки */
+.button {
+    -fx-background-color: #e8aeb7;
+    -fx-text-fill: #ffffff;
+    -fx-background-radius: 10;
+    -fx-padding: 8 14 8 14;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #d99aa5;
+}
+
+/* Специальные кнопки */
+.button-add {
+    -fx-background-color: #bde5c8;
+}
+
+.button-add:hover {
+    -fx-background-color: #a8d8b5;
+}
+
+.button-delete {
+    -fx-background-color: #f2b8b5;
+}
+
+.button-delete:hover {
+    -fx-background-color: #e39c98;
+}
+
+/* Таблица */
+.table-view {
+    -fx-background-color: white;
+    -fx-control-inner-background: white;
+    -fx-border-color: #f1d5dc;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+}
+
+/* Внутренняя область таблицы */
+.table-view .virtual-flow .clipped-container .sheet {
+    -fx-background-color: white;
+}
+
+/* Заголовок */
+.table-view .column-header-background {
+    -fx-background-color: #f8dfe5;
+}
+
+/* Текст заголовков */
+.table-view .column-header .label {
+    -fx-text-fill: #2c3e50;
+    -fx-font-weight: bold;
+}
+
+/* Все строки */
+.table-row-cell {
+    -fx-background-color: white;
+    -fx-border-color: transparent transparent #f3dce2 transparent;
+}
+
+
+/* Выделенная строка */
+.table-row-cell:selected {
+    -fx-background-color: #e8cfd6;
+}
+
+/* Текст в ячейках */
+.table-cell {
+    -fx-text-fill: #2c3e50;
+}
+
+/* Текст в выделенной строке */
+.table-row-cell:selected .table-cell {
+    -fx-text-fill: #2c3e50;
+}
+.table-row-cell:selected {
+    -fx-background-color: #d9e8f5;
+}
+/* Правая панель (карточка) */
+.card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 15;
+    -fx-padding: 15;
+    -fx-border-color: #f0d6dc;
+    -fx-border-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 3);
+}
+.card .label {
+    -fx-text-fill: #555555;
+    -fx-font-size: 13px;
+}
+
+/* Заголовки */
+.label-title {
+    -fx-font-size: 16px;
+    -fx-text-fill: #c97b8b;
+    -fx-font-weight: bold;
+}
+
+/* Поля ввода */
+.text-field {
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #e6cfd5;
+}
+
+.text-field:focused {
+    -fx-border-color: #d99aa5;
+}

@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<ScrollPane fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="500.0" minWidth="-Infinity" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nosova.flowershop.controller.OrderController">
+   <content>
+      <VBox spacing="10.0">
+         <children>
+            <Label text="%label.newOrders" />
+            <Accordion>
+               <panes>
+                  <TitledPane animated="false" text="%titledpane.clientTitle">
+                     <content>
+                        <VBox>
+                           <children>
+                              <Label text="%label.clientCurrent" />
+                              <TableView fx:id="ClientTable" maxHeight="250.0">
+                                 <columns>
+                                    <TableColumn fx:id="ClientNameColumn" prefWidth="75.0" text="%tablecolumn.clientNameOrders" />
+                                    <TableColumn fx:id="ClientLastNameColumn" prefWidth="75.0" text="%tablecolumn.clientLastnameOrders" />
+                                    <TableColumn fx:id="ClientMiddleNameColumn" prefWidth="75.0" text="%tablecolumn.clientMiddlenameOrders" />
+                                    <TableColumn fx:id="ClientFhoneColumn" prefWidth="75.0" text="%tablecolumn.clientFhoneOrders" />
+                                    <TableColumn fx:id="ClientEmailColumn" prefWidth="75.0" text="%tablecolumn.clientEmailOrders" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                              <HBox>
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#onFindClient" text="%button.findClientOrders" />
+                                    <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onSaveClient" text="%button.saveClientOrders" />
+                                 </children>
+                              </HBox>
+                              <VBox maxWidth="150.0">
+                                 <children>
+                                    <TextField fx:id="ClientFindName" promptText="%textfield.client_find_name" />
+                                    <TextField fx:id="ClientFindLastName" promptText="%textfield.client_find_last_name" />
+                                    <TextField fx:id="ClientFindFhone" promptText="%textfield.client_find_fhone" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </VBox>
+                     </content>
+                  </TitledPane>
+                  <TitledPane animated="false" text="%titledpane.flowersOrders">
+                     <content>
+                        <VBox>
+                           <children>
+                              <Label text="%label.currentFlowersOrders" />
+                              <TableView fx:id="FloristTable" maxHeight="200.0">
+                                 <columns>
+                                    <TableColumn fx:id="FloristNameColumn" prefWidth="75.0" text="%tablecolumn.floristNameOrders" />
+                                    <TableColumn fx:id="FloristLastNameColumn" prefWidth="75.0" text="%tablecolumn.floristLastnameOrders" />
+                                    <TableColumn fx:id="FloristMidlleNameColumn" prefWidth="75.0" text="%tablecolumn.floristMidllenameOrders" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                              <HBox>
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#onFindFlorist" text="%button.findFloristOrders" />
+                                    <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onSaveFlorist" text="%button.saveFloristOrders" />
+                                 </children>
+                              </HBox>
+                              <VBox maxWidth="150.0">
+                                 <children>
+                                    <TextField fx:id="FloristNameFind" promptText="%textfield.florist_name_find" />
+                                    <TextField fx:id="FloristLastNameFind" promptText="%textfield.florist_last_name_find" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </VBox>
+                     </content>
+                  </TitledPane>
+                  <TitledPane animated="false" text="%titledpane.bouquetordersTitle">
+                     <content>
+                        <VBox>
+                           <children>
+                              <Label text="%label.currentBouquetOreder" />
+                              <TableView fx:id="BouquetTable" maxHeight="200.0">
+                                 <columns>
+                                    <TableColumn fx:id="BouquetNameColumn" prefWidth="75.0" text="%tablecolumn.bouquetNameOrder" />
+                                    <TableColumn fx:id="BouquetPriceColumn" prefWidth="75.0" text="%tablecolumn.bouquetPriceOrder" />
+                                    <TableColumn fx:id="BouquetTextColumn" prefWidth="75.0" text="%tablecolumn.bouquetTextOrder" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                              <HBox>
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#onBouquetFind" text="%button.findBouquetOrders" />
+                                    <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onBouquetSave" text="%button.saveBouquetOrder" />
+                                 </children>
+                              </HBox>
+                              <VBox maxWidth="150.0">
+                                 <children>
+                                    <TextField fx:id="bouquetNameFind" promptText="%textfield.bouquet_name_find" />
+                                    <TextField fx:id="BouquetPriceFind" promptText="%textfield.bouquet_price_find" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </VBox>
+                     </content>
+                  </TitledPane>
+                  <TitledPane animated="false" layoutX="10.0" layoutY="60.0" text="%titledpane.addressOrderTitle">
+                     <content>
+                        <VBox>
+                           <children>
+                              <ComboBox fx:id="boolDeliver" onAction="#onBoolDeliveri" prefWidth="150.0" promptText="%combobox.bool_deliver" />
+                              <Label text="%label.currentBouqetOrder" />
+                              <TableView fx:id="AddressTaible" maxHeight="200.0">
+                                 <columns>
+                                    <TableColumn fx:id="AddresCetiColumn" prefWidth="75.0" text="%tablecolumn.addessCityOreder" />
+                                    <TableColumn fx:id="AddresStretColumn" prefWidth="75.0" text="%tablecolumn.addresStretOrder" />
+                                    <TableColumn fx:id="AddressHomeColumn" prefWidth="75.0" text="%tablecolumn.addressHomeOrder" />
+                                    <TableColumn fx:id="AddressNumberColumn" prefWidth="75.0" text="%tablecolumn.addressNumberOrder" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                              <HBox>
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#onAddressFind" text="%button.findAddressOrder" />
+                                    <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onAddressSave" text="%button.saveAddressOrder" />
+                                 </children>
+                              </HBox>
+                              <VBox maxWidth="150.0">
+                                 <children>
+                                    <TextField fx:id="AddressStretFind" promptText="%textfield.address_stret_find" />
+                                    <TextField fx:id="AddressHomeFind" promptText="%textfield.address_home_find" />
+                                 </children>
+                              </VBox>
+                              <VBox>
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#onAddressAdd" text="%button.addAddressOrder" />
+                                    <TextField fx:id="addAddressCity" promptText="%textfield.add_address_city" />
+                                    <TextField fx:id="addAddressStret" promptText="%textfield.add_address_stret" />
+                                    <TextField fx:id="addAddressHome" promptText="%textfield.add_address_home" />
+                                    <TextField fx:id="addAddressEntrance" promptText="%textfield.add_address_entrance" />
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="20.0" layoutY="337.0">
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#onDeliveryTime" text="%button.addTimeDelevery" />
+                                    <TextField fx:id="addDeliveryTime" promptText="%textfield.add_delivery_time" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </VBox>
+                     </content>
+                  </TitledPane>
+               </panes>
+            </Accordion>
+            <VBox>
+               <children>
+                  <TextField fx:id="ClientOrder" promptText="%textfield.client_order" />
+                  <TextField fx:id="FloristOrder" promptText="%textfield.florist_order" />
+                  <TextField fx:id="BouquetOrder" promptText="%textfield.bouquet_order" />
+                  <TextField fx:id="DelivereOrder" promptText="%textfield.delivere_order" />
+               </children>
+            </VBox>
+            <HBox>
+               <children>
+                  <Label text="%label.priceOrders">
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin></Label>
+                  <Label fx:id="PriceOrder" />
+               </children>
+            </HBox>
+            <HBox layoutX="15.0" layoutY="770.0">
+               <children>
+                  <Label text="%label.timeOrders">
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="DelivereTime" />
+               </children>
+            </HBox>
+            <HBox layoutX="15.0" layoutY="470.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#onOk" text="%button.saveOrders" />
+                  <Button mnemonicParsing="false" onAction="#onOtm" text="%button.otmOrders">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin></Button>
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets left="5.0" right="5.0" />
+         </padding>
+      </VBox>
+   </content>
+</ScrollPane>

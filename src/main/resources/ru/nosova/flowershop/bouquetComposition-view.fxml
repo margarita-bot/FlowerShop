@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<SplitPane dividerPositions="0.5" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nosova.flowershop.controller.BouquetCompositionController">
+   <items>
+      <VBox minWidth="300.0">
+         <children>
+            <HBox>
+               <children>
+                  <Label text="%label.nameFlowercCurrent" />
+                  <Label fx:id="LabelNameFlowers" layoutX="10.0" layoutY="10.0">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+            <Label text="%label.countFlowersAdd">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </Label>
+            <Spinner fx:id="countFlowers" editable="true" />
+            <HBox>
+               <children>
+                  <Label text="%label.priceFlowersComp">
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="LabelPrice" />
+               </children>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </HBox>
+            <Button fx:id="buttonAddFlowers" mnemonicParsing="false" onAction="#onAddFlowers" text="%button.buttonAddFlowersComp">
+               <VBox.margin>
+                  <Insets bottom="5.0" top="5.0" />
+               </VBox.margin>
+            </Button>
+            <Spinner fx:id="editCountFlowers" editable="true" layoutX="10.0" layoutY="49.0">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin></Spinner>
+            <Label fx:id="idError" />
+            <Button fx:id="buttonEditCount" mnemonicParsing="false" onAction="#onEditCount" text="%button.button_edit_count">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin></Button>
+            <Button fx:id="bottonDelete" mnemonicParsing="false" onAction="#onDelete" text="%button.botton_delete">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin></Button>
+            <Button fx:id="buttonSave" mnemonicParsing="false" onAction="#onSave" text="%button.buttonSaveComp">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="buttonClose" mnemonicParsing="false" onAction="#onClose" text="%button.buttonCloseComp">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+      </VBox>
+      <VBox>
+         <children>
+            <TableView fx:id="TableFlowers" maxHeight="350.0">
+               <columns>
+                  <TableColumn fx:id="columnName" prefWidth="75.0" text="%tablecolumn.NameFloCom" />
+                  <TableColumn fx:id="columnCount" prefWidth="75.0" text="%tablecolumn.CountFlowCom" />
+                  <TableColumn fx:id="columnPrice" prefWidth="75.0" text="%tablecolumn.PriceFlowCom" />
+               </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+            <TableView fx:id="TableBouquetComposition" maxHeight="200.0" minWidth="400.0">
+               <columns>
+                  <TableColumn fx:id="columnFlowers" prefWidth="75.0" text="%tablecolumn.columnFlowersNameOnComp" />
+                  <TableColumn fx:id="columnCountFlowers" prefWidth="75.0" text="%tablecolumn.CountFlowersonComp" />
+                  <TableColumn fx:id="columnPriceAll" prefWidth="75.0" text="%tablecolumn.priceFlowerOnComp" />
+               </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+         </children>
+      </VBox>
+   </items>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</SplitPane>

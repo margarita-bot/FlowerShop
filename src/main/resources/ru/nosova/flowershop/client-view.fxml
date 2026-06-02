@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nosova.flowershop.controller.ClientController">
+   <center>
+      <VBox BorderPane.alignment="CENTER">
+         <children>
+            <TableView fx:id="ClientTable" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
+               <columns>
+                  <TableColumn fx:id="nameColumn" prefWidth="75.0" text="%tablecolumn.name_column" />
+                  <TableColumn fx:id="lastnameColumn" prefWidth="75.0" text="%tablecolumn.lastname_column" />
+                  <TableColumn fx:id="midllenameColumn" prefWidth="75.0" text="%tablecolumn.midllename_column" />
+                  <TableColumn fx:id="phoneColumn" prefWidth="75.0" text="%tablecolumn.phone_column" />
+                  <TableColumn fx:id="emailColumn" prefWidth="75.0" text="%tablecolumn.email_column" />
+               </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+         </children>
+         <BorderPane.margin>
+            <Insets top="5.0" />
+         </BorderPane.margin>
+      </VBox>
+   </center>
+   <top>
+      <ToolBar BorderPane.alignment="CENTER">
+         <items>
+            <Label text="%label.label" />
+            <ComboBox fx:id="boxMenu" onAction="#onBoxMenu" prefWidth="150.0" promptText="%combobox.box_menu" />
+            <Button fx:id="backToMain" mnemonicParsing="false" onAction="#onBackMain" text="%button.back_to_main" />
+         </items>
+      </ToolBar>
+   </top>
+   <left>
+      <VBox BorderPane.alignment="CENTER">
+         <children>
+            <Label text="%label.label_2" />
+            <TextField fx:id="textName" promptText="%textfield.text_name">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="textLastname" promptText="%textfield.text_lastname">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="textPhone" promptText="%textfield.text_phone">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </TextField>
+            <Label fx:id="idErrorFind" layoutX="10.0" layoutY="10.0" />
+            <Button fx:id="buttonFind" mnemonicParsing="false" onAction="#onButtonFind" text="%button.button_find" />
+            <Label text="%label.label_3" />
+            <TextField fx:id="editName" promptText="%textfield.edit_name">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="editLastname" promptText="%textfield.edit_lastname">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="editMiidllename" promptText="%textfield.edit_miidllename">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="editEmail" promptText="%textfield.edit_email">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="editPhone" promptText="%textfield.edit_phone">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </TextField>
+            <Label fx:id="idErrorEdit" layoutX="10.0" layoutY="161.0" />
+            <Button fx:id="buttonEdit" mnemonicParsing="false" onAction="#onEdit" text="%button.button_edit_client" />
+         </children>
+         <BorderPane.margin>
+            <Insets left="5.0" right="5.0" top="5.0" />
+         </BorderPane.margin>
+      </VBox>
+   </left>
+   <bottom>
+      <HBox alignment="TOP_CENTER" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="buttonReset" mnemonicParsing="false" onAction="#onReset" text="%button.button_reset">
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="buttonDelete" mnemonicParsing="false" onAction="#onDelete" text="%button.button_delete">
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="buttonExit" mnemonicParsing="false" onAction="#onExit" text="%button.button_exit" />
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="5.0" left="5.0" top="5.0" />
+         </BorderPane.margin>
+      </HBox>
+   </bottom>
+   <right>
+      <VBox BorderPane.alignment="CENTER">
+         <children>
+            <Label text="%label.label_4" />
+            <TextField fx:id="addName" promptText="%textfield.add_name">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="addLastname" promptText="%textfield.add_lastname">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="addMiidllename" layoutX="10.0" layoutY="52.0" promptText="%textfield.add_miidllename">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="addEmail" layoutX="10.0" layoutY="102.0" promptText="%textfield.add_email">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="addPhone" layoutX="10.0" layoutY="77.0" promptText="%textfield.add_phone">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </TextField>
+            <Label fx:id="idErrorAdd" layoutX="10.0" layoutY="10.0" />
+            <Button fx:id="buttonAdd" mnemonicParsing="false" onAction="#onButtonAdd" text="%button.button_add" />
+         </children>
+         <BorderPane.margin>
+            <Insets left="5.0" right="5.0" top="5.0" />
+         </BorderPane.margin>
+      </VBox>
+   </right>
+</BorderPane>
