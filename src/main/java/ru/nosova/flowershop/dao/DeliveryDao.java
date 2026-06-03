@@ -14,15 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/*
-CREATE TABLE flowershop.delivery (
-delivery_id SERIAL PRIMARY KEY,
- flower_id INTEGER NOT NULL,
- quantity INTEGER NOT NULL CHECK (quantity > 0),
-date DATE NOT NULL
-);
-
- */
 public class DeliveryDao implements DeliveryDaoImpl {
     SQLStatements sql = new SQLStatements();
     @Override

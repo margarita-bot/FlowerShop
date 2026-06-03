@@ -42,9 +42,6 @@ public class BouquetController {
     @FXML private TableColumn<Bouquet, String> columnName;
     @FXML private TableColumn<Bouquet, Double> columnPrice;
     @FXML private TableColumn<Bouquet, String> columnText;
-    @FXML private TextArea editBouquetText;
-    @FXML private TextField editName;
-    @FXML private TextField editPrice;
     @FXML private TextField findName;
     @FXML private TextField findPrice;
     @FXML private TextArea idBouquetText;
@@ -76,9 +73,6 @@ public class BouquetController {
                     idPriceBouquet.setText(String.valueOf(current.getPrice()));
                     idBouquetText.setText(current.getDescription());
 
-                    editName.setText(current.getName());
-                    editPrice.setText(String.valueOf(current.getPrice()));
-                    editPrice.setText(current.getDescription());
                 }
             }
         });

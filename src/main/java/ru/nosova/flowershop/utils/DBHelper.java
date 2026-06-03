@@ -1,5 +1,8 @@
 package ru.nosova.flowershop.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -9,51 +12,50 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class DBHelper {
+    private static final Logger logger = LoggerFactory.getLogger(DBHelper.class);
     private static Connection connection;
     private static String dbUrlBase;
     private static String dbName;
-    private static String dbUser;
-    private static String dbPassword;
 
     static {
         try {
             URL url = DBHelper.class.getResource("/config.properties");
             if (url == null) {
-                throw new RuntimeException("config.properties не найден!");
+                logger.error("config.properties не найден!");
             }
-
-            Properties prop = new Properties();
+            Properties properties = new Properties();
             try (FileInputStream fis = new FileInputStream(url.getFile())) {
-                prop.load(fis);
-                dbUrlBase = prop.getProperty("db.url");
-                dbName = prop.getProperty("db.name");
-//                dbUser = prop.getProperty("db.user");
-//                dbPassword = prop.getProperty("db.password");
+                properties.load(fis);
+                dbUrlBase = properties.getProperty("db.url");
+                dbName = properties.getProperty("db.name");
             }
         } catch (IOException ex) {
-            ex.printStackTrace();
+            logger.error("Ошибка чтения config.properties", ex);
         }
     }
 
-    // Для авторизации - подключаемся с переданным пользователем и паролем
     public static void initConnection(String user, String password) throws SQLException {
         if (connection != null && !connection.isClosed()) {
             closeConnection();
         }
-
         String fullUrl = dbUrlBase + dbName;
-        System.out.println("Подключение к " + fullUrl + " пользователем " + user);
         connection = DriverManager.getConnection(fullUrl, user, password);
-        System.out.println("Соединение установлено");
+        logger.info("Подключение к БД установлено пользователем " + user);
+    }
+    public static Connection getConnection() {
+        if (connection == null) {
+            logger.error("config.properties не найден");
+        }
+        return connection;
     }
 
     public static void closeConnection() {
         if (connection != null) {
             try {
                 connection.close();
-                System.out.println("Соединение закрыто");
+                logger.info("Соединение с БД закрыто");
             } catch (SQLException ex) {
-                System.err.println("Ошибка закрытия соединения: " + ex.getMessage());
+                logger.error("Ошибка закрытия соединения", ex);
             }
         }
     }

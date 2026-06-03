@@ -40,7 +40,6 @@ public class MainApplication extends Application {
             FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("FlowerShop-view.fxml"), bundle);
             Scene scene = new Scene(loader.load());
             stage.setTitle("Цветочный магазин");
-            //stage.setFullScreen(true);
             stage.setScene(scene);
 
         } catch (IOException e) {

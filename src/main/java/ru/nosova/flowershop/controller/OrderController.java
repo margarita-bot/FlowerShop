@@ -14,15 +14,20 @@ import ru.nosova.flowershop.dao.impl.*;
 import ru.nosova.flowershop.model.*;
 
 import java.sql.Time;
+import java.util.List;
 
 public class OrderController {
 
-    public TextField addAddressCity;
-    public TextField addAddressStret;
-    public TextField addAddressHome;
-    public TextField addAddressEntrance;
-    public TextField addDeliveryTime;
-    public Label DelivereTime;
+    @FXML private Label idErrorsFindBouquet;
+    @FXML private Label idErrorFindClient;
+    @FXML private Label idErrorsFindAddress;
+    @FXML private TextField addAddressCity;
+    @FXML private TextField addAddressStret;
+    @FXML private TextField addAddressHome;
+    @FXML private TextField addAddressEntrance;
+    @FXML private TextField addDeliveryTime;
+    @FXML private Label DelivereTime;
+    @FXML private TextField BouquetPriceMaxFind;
     @FXML private ComboBox boolDeliver;
     @FXML private TableView<Address> AddressTaible;
     @FXML private TableColumn<Address, String> AddresCetiColumn;
@@ -57,8 +62,7 @@ public class OrderController {
     @FXML private TableColumn<Florist, String > FloristLastNameColumn;
     @FXML private TableColumn<Florist, String> FloristMidlleNameColumn;
     @FXML private TableColumn<Florist, String> FloristNameColumn;
-    @FXML private TextField FloristLastNameFind;
-    @FXML private TextField FloristNameFind;
+
 
     @FXML private TextField ClientOrder;
     @FXML private TextField DelivereOrder;
@@ -160,7 +164,19 @@ public class OrderController {
 
     @FXML
     void onBouquetFind(ActionEvent event) {
-
+        String name = bouquetNameFind.getText().trim();
+        double minPrice = Double.parseDouble(BouquetPriceFind.getText().isEmpty() ? "0" : BouquetPriceFind.getText());
+        double maxPrice = Double.parseDouble(BouquetPriceMaxFind.getText().isEmpty() ? "0" : BouquetPriceMaxFind.getText());
+        if (name.isBlank() && maxPrice == 0 && minPrice == 0){
+            idErrorsFindBouquet.setText("Введите хотя бы один параметр поиска");
+            return;
+        }
+        bouquets.clear();
+        List<Bouquet> find = bouquetDao.find(name, minPrice, maxPrice);
+        bouquets.addAll(find);
+        bouquetNameFind.clear();
+        BouquetPriceFind.clear();
+        BouquetPriceMaxFind.clear();
     }
 
     @FXML
@@ -175,13 +191,30 @@ public class OrderController {
 
     @FXML
     void onFindClient(ActionEvent event) {
+        String name = ClientFindName.getText().trim();
+        String lastname = ClientFindLastName.getText().trim();
+        String phone = ClientFindFhone.getText().trim();
 
+        if (name.isBlank() && lastname.isBlank() && phone.isBlank()) {
+            idErrorFindClient.setText("Введите хотя бы один параметр поиска.");
+            return;
+        }
+
+        if(name.isBlank()){name=null;}
+        if (lastname.isBlank()){lastname=null;}
+        if(phone.isBlank()){phone=null;}
+
+        List<Client> find = clientDao.findClient(name, lastname, phone);
+
+        clients.clear();
+        clients.addAll(find);
+        ClientTable.setItems(clients);
+
+        ClientFindName.clear();
+        ClientFindLastName.clear();
+        ClientFindFhone.clear();
     }
 
-    @FXML
-    void onFindFlorist(ActionEvent event) {
-
-    }
     private void showError(String text) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);
@@ -213,22 +246,17 @@ public class OrderController {
         Time deliveryTime = null;
 
         if (delivery) {
-
             if (saveAddress == null) {
                 showError("Выберите адрес доставки");
                 return;
             }
-
             if (addDeliveryTime.getText().isBlank()) {
                 showError("Укажите время доставки");
                 return;
             }
-
             addressId = saveAddress.getAddress_id();
-
             try {
-                deliveryTime =
-                        Time.valueOf(addDeliveryTime.getText().trim() + ":00");
+                deliveryTime = Time.valueOf(addDeliveryTime.getText().trim() + ":00");
             } catch (Exception e) {
                 showError("Неверный формат времени. Используйте ЧЧ:ММ");
                 return;

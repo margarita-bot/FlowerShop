@@ -1,7 +1,9 @@
 package ru.nosova.flowershop.controller;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import lombok.AllArgsConstructor;
@@ -13,8 +15,6 @@ import ru.nosova.flowershop.utils.DBHelper;
 import java.sql.SQLException;
 
 public class UserController {
-    @Getter
-    private boolean okClicked = false;
 
     @FXML private TextField login;
     @FXML private TextField pass;
@@ -24,33 +24,34 @@ public class UserController {
 
     @FXML
     void onClose(ActionEvent event) {
-        okClicked = false;
-        dialogStage.close();
+        Platform.exit();
     }
 
     public void onOk(ActionEvent event) {
         String u = login.getText().trim();
         String p = pass.getText().trim();
         if(u.isEmpty() || p.isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Ошибка ввода");
+            alert.setHeaderText(null);
+            alert.setContentText("Введите логин и пароль.");
+            alert.showAndWait();
             return;
         }
         try {
             DBHelper.initConnection(u, p);
-
-            okClicked = true;
             MainApplication.showMainWindow();
-
         } catch (SQLException e) {
-            // Ошибка подключения — неверный логин/пароль
-            System.err.println("Ошибка подключения: " + e.getMessage());
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Ошибка авторизации");
+            alert.setHeaderText("Не удалось выполнить вход");
+            alert.setContentText("Неверный логин или пароль.");
+            alert.showAndWait();
         }
     }
 
     public LoginResult getLoginResult() {
-        if (okClicked) {
             return new LoginResult(login.getText().trim(), pass.getText().trim());
-        }
-        return null;
     }
     @Getter
     @AllArgsConstructor

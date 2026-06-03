@@ -1,1 +1,2 @@
-02.06.2026 21:56:49.777 [JavaFX Application Thread] INFO  r.n.f.c.ClientController - Open window: /ru/nosova/flowershop/FlowerShop-view.fxml
+03.06.2026 15:03:58.483 [JavaFX Application Thread] INFO  r.n.f.utils.DBHelper - Подключение к БД установлено пользователем florist
+03.06.2026 16:05:57.758 [JavaFX Application Thread] INFO  r.n.f.utils.DBHelper - Подключение к БД установлено пользователем florist

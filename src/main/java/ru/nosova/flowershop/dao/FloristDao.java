@@ -10,15 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-/*
-CREATE TABLE flowershop.florist (
- florist_id SERIAL PRIMARY KEY,
- first_name VARCHAR(50) NOT NULL,
- last_name VARCHAR(50) NOT NULL,
- middle_name VARCHAR(50),
- phone VARCHAR(11) NOT NULL
-);
- */
+
 public class FloristDao implements FloristDaoImpl {
     SQLStatements sql = new SQLStatements();
     @Override

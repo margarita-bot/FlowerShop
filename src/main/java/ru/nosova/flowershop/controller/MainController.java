@@ -205,9 +205,6 @@ public class MainController {
         stage.showAndWait();
     }
 
-    public void clikFindOrder(ActionEvent event) {
-    }
-
     public void onSetting(ActionEvent event) {
         String selected = boxSetting.getValue();
 

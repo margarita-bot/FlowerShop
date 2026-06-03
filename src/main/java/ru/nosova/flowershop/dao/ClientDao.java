@@ -11,16 +11,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
-CREATE TABLE  flowershop.client (
-    client_id SERIAL PRIMARY KEY,
-    first_name VARCHAR(50) NOT NULL,
-    last_name VARCHAR(50) NOT NULL,
-    middle_name VARCHAR(50),
-    email VARCHAR(100),
-    phone VARCHAR(12) NOT NULL
-);
- */
 public class ClientDao implements ClientDaoImpl<Client, Long>{
     private final SQLStatements sql = new SQLStatements();
 
@@ -63,7 +53,6 @@ public class ClientDao implements ClientDaoImpl<Client, Long>{
         }catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        //TODO сделать проверки и сообщение об ошибке
         return client;
     }
 
@@ -81,7 +70,6 @@ public class ClientDao implements ClientDaoImpl<Client, Long>{
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        //TODO сделать проверки и сообщение об ошибке. Возможно изменить
         return client;
     }
 
@@ -125,7 +113,6 @@ public class ClientDao implements ClientDaoImpl<Client, Long>{
             statement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
-            //TODO добавить сообщение об ошибке
         }
     }
 }

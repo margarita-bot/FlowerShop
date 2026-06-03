@@ -23,8 +23,7 @@
                <children>
                   <Label layoutY="8.0" prefHeight="7.0" prefWidth="68.0" text="%label.menu" />
                   <ComboBox fx:id="idMenuBox" layoutX="75.0" layoutY="3.0" onAction="#clikMenuBox" promptText="%comboBox.menuBox" AnchorPane.leftAnchor="75.0" />
-                  <Button fx:id="buttonClear" layoutX="247.0" layoutY="-1.0" mnemonicParsing="false" onAction="#clikClear" text="%button.clear" />
-                  <Button fx:id="buttonExit" layoutX="359.0" layoutY="-1.0" mnemonicParsing="false" onAction="#clikExit" text="%button.exit" />
+                  <Button fx:id="buttonExit" layoutX="275.0" layoutY="-1.0" mnemonicParsing="false" onAction="#clikExit" text="%button.exit" />
                   <ComboBox fx:id="boxSetting" layoutX="786.0" layoutY="3.0" onAction="#onSetting" promptText="%comboBox.boxSettingLan" AnchorPane.leftAnchor="786.0" />
                </children>
             </AnchorPane>
@@ -90,11 +89,6 @@
             <HBox alignment="TOP_CENTER">
                <children>
                   <Button fx:id="buttonNewOrder" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clikNewOrder" text="%button.button_new_order">
-                     <HBox.margin>
-                        <Insets right="5.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Button fx:id="buttonEdit" mnemonicParsing="false" onAction="#clikEdit" text="%button.button_edit">
                      <HBox.margin>
                         <Insets right="5.0" />
                      </HBox.margin>

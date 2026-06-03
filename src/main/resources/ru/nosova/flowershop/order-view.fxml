@@ -45,6 +45,7 @@
                               </HBox>
                               <VBox maxWidth="150.0">
                                  <children>
+                                    <Label fx:id="idErrorFindClient" />
                                     <TextField fx:id="ClientFindName" promptText="%textfield.client_find_name" />
                                     <TextField fx:id="ClientFindLastName" promptText="%textfield.client_find_last_name" />
                                     <TextField fx:id="ClientFindFhone" promptText="%textfield.client_find_fhone" />
@@ -71,16 +72,9 @@
                               </TableView>
                               <HBox>
                                  <children>
-                                    <Button mnemonicParsing="false" onAction="#onFindFlorist" text="%button.findFloristOrders" />
                                     <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onSaveFlorist" text="%button.saveFloristOrders" />
                                  </children>
                               </HBox>
-                              <VBox maxWidth="150.0">
-                                 <children>
-                                    <TextField fx:id="FloristNameFind" promptText="%textfield.florist_name_find" />
-                                    <TextField fx:id="FloristLastNameFind" promptText="%textfield.florist_last_name_find" />
-                                 </children>
-                              </VBox>
                            </children>
                         </VBox>
                      </content>
@@ -108,8 +102,10 @@
                               </HBox>
                               <VBox maxWidth="150.0">
                                  <children>
+                                    <Label fx:id="idErrorsFindBouquet" />
                                     <TextField fx:id="bouquetNameFind" promptText="%textfield.bouquet_name_find" />
                                     <TextField fx:id="BouquetPriceFind" promptText="%textfield.bouquet_price_find" />
+                                    <TextField fx:id="BouquetPriceMaxFind" layoutX="10.0" layoutY="35.0" promptText="%textfield.bouquet_priceMax_find" />
                                  </children>
                               </VBox>
                            </children>
@@ -141,6 +137,7 @@
                               </HBox>
                               <VBox maxWidth="150.0">
                                  <children>
+                                    <Label fx:id="idErrorsFindAddress" />
                                     <TextField fx:id="AddressStretFind" promptText="%textfield.address_stret_find" />
                                     <TextField fx:id="AddressHomeFind" promptText="%textfield.address_home_find" />
                                  </children>

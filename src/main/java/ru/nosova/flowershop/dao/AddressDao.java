@@ -10,15 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-/*
-CREATE TABLE flowershop.address (
- address_id SERIAL PRIMARY KEY,
- city VARCHAR(100) NOT NULL,
- street VARCHAR(100) NOT NULL,
- house VARCHAR(20) NOT NULL,
- entrance VARCHAR(10)
-);
- */
+
 public class AddressDao implements AddressDaoImpl{
     SQLStatements sql = new SQLStatements();
     @Override
@@ -59,6 +51,5 @@ public class AddressDao implements AddressDaoImpl{
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        //TODO сделать проверки и сообщение об ошибке. Возможно изменить
     }
 }

@@ -9,19 +9,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-/*
-CREATE TABLE flowershop.orders (
- order_id SERIAL PRIMARY KEY,
- bouquet_id INTEGER NOT NULL,
- client_id INTEGER NOT NULL,
- florist_id INTEGER NOT NULL,
- address_id INTEGER NOT NULL,
- price NUMERIC(10,2) NOT NULL,
- date DATE NOT NULL,
- status VARCHAR(50) NOT NULL
-);
 
- */
 public class OrdersDao implements OrdersDaoImpl<Orders, Long> {
     SQLStatements sql = new SQLStatements();
     @Override
