@@ -2,6 +2,8 @@ package ru.nosova.flowershop.controller;
 
 import javafx.application.Platform;
 import javafx.beans.property.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -91,6 +93,32 @@ public class MainController {
 
         else
             boxSetting.setValue("English");
+
+        TableOrder.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Orders>() {
+            @Override
+            public void changed(ObservableValue<? extends Orders> observableValue,  Orders oldOrder, Orders current) {
+                if (current != null) {
+
+                    idName.setText(current.getClient().getFirstName());
+                    idLastName.setText(current.getClient().getLastName());
+                    idMiddliName.setText(current.getClient().getMiddleName());
+                    idPhone.setText(current.getClient().getPhone());
+
+                    idCity.setText(current.getAddress().getCity());
+                    idStreet.setText(current.getAddress().getStreet());
+                    idHouse.setText(current.getAddress().getHouse());
+
+                    idNameFlowers.setText(
+                            current.getBouquet().getName());
+
+                    idPriceFlowers.setText(
+                            String.valueOf(current.getPrice()));
+
+                    idBouquetText.setText(
+                            current.getBouquet().getDescription());
+                }
+            }
+        });
     }
 
     private void openWindow(String path) {
