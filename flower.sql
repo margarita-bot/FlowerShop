@@ -1,0 +1,706 @@
+-- CREATE ROLE florist WITH LOGIN PASSWORD '1234567';
+-- GRANT CONNECT ON DATABASE "FlowerShop" TO florist;
+-- GRANT USAGE ON SCHEMA flowershop TO florist;
+-- GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA flowershop
+-- TO florist;
+-- ALTER DEFAULT PRIVILEGES IN SCHEMA flowershop GRANT SELECT, INSERT,
+-- UPDATE, DELETE ON TABLES TO florist;
+-- GRANT USAGE, SELECT
+-- ON ALL SEQUENCES IN SCHEMA flowershop
+-- TO florist;
+
+-- CREATE SCHEMA flowershop;
+
+--  CREATE TABLE flowershop.bouquet(
+--     bouquet_id SERIAL PRIMARY KEY,
+--     name VARCHAR(100) NOT NULL,
+--     price NUMERIC(10,2) NOT NULL,
+--     description TEXT
+-- );
+
+--  CREATE TABLE flowershop.flowers(
+--  	flower_id SERIAL PRIMARY KEY,
+--  	name VARCHAR(100) NOT NULL,
+--     price NUMERIC(10,2) NOT NULL,
+--     quantity INTEGER NOT NULL DEFAULT 0,
+--     img_path VARCHAR NOT NULL
+--  );
+-- CREATE TABLE flowershop.bouquet_composition(
+-- 	bouquet_id INTEGER NOT NULL,
+--     flower_id INTEGER NOT NULL,
+--     quantity INTEGER NOT NULL CHECK (quantity > 0),
+--     price NUMERIC (6,2) NOT NULL,
+-- 	PRIMARY KEY (bouquet_id, flower_id)
+-- );
+   
+-- ALTER TABLE flowershop.bouquet_composition
+-- ADD CONSTRAINT fk_bouquet
+-- FOREIGN KEY (bouquet_id)
+-- REFERENCES flowershop.bouquet(bouquet_id)
+-- ON DELETE CASCADE;
+
+-- ALTER TABLE flowershop.bouquet_composition 
+-- ADD CONSTRAINT fk_flower
+-- FOREIGN KEY (flower_id)
+-- REFERENCES flowershop.flowers(flower_id)
+-- ON DELETE CASCADE;
+-- CREATE OR REPLACE FUNCTION flowershop.recalculate_bouquet_price()
+-- RETURNS TRIGGER AS $$
+-- BEGIN
+--     UPDATE flowershop.bouquet
+--     SET price = (
+--         SELECT COALESCE(SUM(bc.price * bc.quantity), 0)
+--         FROM flowershop.bouquet_composition bc
+--         WHERE bc.bouquet_id = OLD.bouquet_id
+--     )
+--     WHERE bouquet_id = OLD.bouquet_id;
+    
+--     RETURN OLD;
+-- END;
+-- $$ LANGUAGE plpgsql;
+
+-- CREATE TRIGGER trigger_recalculate_price_on_delete
+-- AFTER DELETE ON flowershop.bouquet_composition
+-- FOR EACH ROW
+-- EXECUTE FUNCTION flowershop.recalculate_bouquet_price();
+
+
+-- CREATE TABLE flowershop.delivery (
+-- 	delivery_id SERIAL PRIMARY KEY,
+--     flower_id INTEGER NOT NULL,
+--     quantity INTEGER NOT NULL CHECK (quantity > 0),
+-- 	date DATE NOT NULL
+-- );
+
+-- ALTER TABLE flowershop.delivery 
+-- ADD CONSTRAINT fk_flower
+-- FOREIGN KEY (flower_id)
+-- REFERENCES flowershop.flowers(flower_id)
+-- ON DELETE CASCADE;
+
+-- CREATE TABLE  flowershop.client (
+--     client_id SERIAL PRIMARY KEY,
+--     first_name VARCHAR(50) NOT NULL,
+--     last_name VARCHAR(50) NOT NULL,
+--     middle_name VARCHAR(50),
+--     email VARCHAR(100),
+--     phone VARCHAR(12) NOT NULL
+-- );
+
+-- CREATE TABLE flowershop.florist (
+--     florist_id SERIAL PRIMARY KEY,
+--     first_name VARCHAR(50) NOT NULL,
+--     last_name VARCHAR(50) NOT NULL,
+--     middle_name VARCHAR(50),
+--     phone VARCHAR(11) NOT NULL
+-- );
+
+-- ALTER TABLE flowershop.florist
+-- ADD CONSTRAINT fk_florist_address
+-- FOREIGN KEY (address_id)
+-- REFERENCES flowershop.address(address_id);
+
+-- CREATE TABLE flowershop.address (
+--     address_id SERIAL PRIMARY KEY,
+--     city VARCHAR(100) NOT NULL,
+--     street VARCHAR(100) NOT NULL,
+--     house VARCHAR(20) NOT NULL,
+--     entrance VARCHAR(10)
+-- );
+-- CREATE OR REPLACE FUNCTION flowershop.find_address(
+--     p_street VARCHAR DEFAULT NULL,
+--     p_house VARCHAR DEFAULT NULL
+-- )
+-- RETURNS TABLE(
+--     address_id INTEGER,
+--     city VARCHAR,
+--     street VARCHAR,
+--     house VARCHAR,
+--     entrance VARCHAR
+-- )
+-- LANGUAGE sql
+-- AS
+-- $$
+-- SELECT
+--     a.address_id,
+--     a.city,
+--     a.street,
+--     a.house,
+--     a.entrance
+-- FROM flowershop.address a
+-- WHERE
+--     (
+--         p_street IS NULL
+--         OR LOWER(a.street) LIKE LOWER('%' || p_street || '%')
+--     )
+-- AND
+--     (
+--         p_house IS NULL
+--         OR a.house LIKE '%' || p_house || '%'
+--     );
+-- $$;
+
+-- CREATE TABLE flowershop.orders (
+--     order_id SERIAL PRIMARY KEY,
+--     bouquet_id INTEGER NOT NULL,
+--     client_id INTEGER NOT NULL,
+--     florist_id INTEGER NOT NULL,
+--     address_id INTEGER NOT NULL,
+--     price NUMERIC(10,2) NOT NULL,
+--     date DATE NOT NULL,
+--     delivery BOOLEAN NOT NULL,
+--     status VARCHAR(50) NOT NULL,
+--     delivere_time time without time zone
+-- );
+
+-- ALTER TABLE flowershop.orders
+-- ADD CONSTRAINT fk_order_client
+-- FOREIGN KEY (client_id)
+-- REFERENCES flowershop.client(client_id)
+-- ON DELETE SET NULL;
+
+-- ALTER TABLE flowershop.orders
+-- ADD CONSTRAINT fk_order_florist
+-- FOREIGN KEY (florist_id)
+-- REFERENCES flowershop.florist(florist_id)
+-- ON DELETE SET NULL;
+
+-- ALTER TABLE flowershop.orders
+-- ADD CONSTRAINT fk_order_address
+-- FOREIGN KEY (address_id)
+-- REFERENCES flowershop.address(address_id)
+-- ON DELETE SET NULL;
+
+-- ALTER TABLE flowershop.orders
+-- ADD CONSTRAINT fk_order_bouquet
+-- FOREIGN KEY (bouquet_id)
+-- REFERENCES flowershop.bouquet(bouquet_id)
+-- ON DELETE SET NULL;
+
+-- ALTER TABLE flowershop.orders
+-- ADD CONSTRAINT fk_order_status
+-- FOREIGN KEY (status_id)
+-- REFERENCES flowershop.status(status_id)
+-- ON DELETE SET NULL;
+
+-- CREATE OR REPLACE FUNCTION flowershop.get_flower_name(id INTEGER)
+-- RETURNS VARCHAR
+-- LANGUAGE plpgsql
+-- AS
+-- $$
+-- DECLARE
+--     flower_name VARCHAR;
+-- BEGIN
+--     SELECT name AS "Название цветка"
+--     INTO flower_name
+--     FROM flowershop.flowers
+--     WHERE flower_id = id;
+-- 	IF flower_name IS NULL THEN
+--         RETURN 'Цветок не найден';
+--     END IF;
+--     RETURN flower_name;
+-- END;
+-- $$;
+
+-- CREATE TABLE flowershop.status (
+--     status_id SERIAL PRIMARY KEY,
+--     status_text VARCHAR(50) NOT NULL
+-- );
+
+-- CREATE OR REPLACE FUNCTION flowershop.create_order(
+-- 	p_client_id INTEGER,
+-- 	p_florist_id INTEGER,
+-- 	p_bouqet_id INTEGER,
+-- 	p_status_id INTEGER,
+-- 	p_delivery BOOLEAN,
+-- 	p_address_id INTEGER DEFAULT NULL,
+-- 	p_delivery_time TIME DEFAULT NULL
+-- )
+-- RETURNS VARCHAR
+-- LANGUAGE plpgsql
+-- AS
+-- $$
+-- DECLARE
+-- 	v_price NUMERIC(10, 2);
+-- BEGIN
+-- 	IF NOT EXISTS (
+--         SELECT 1
+--         FROM flowershop.client
+--         WHERE client_id = p_client_id
+--     ) THEN
+--         RETURN 'Ошибка: клиент не найден';
+--     END IF;
+
+-- 	IF NOT EXISTS (
+--         SELECT 1
+--         FROM flowershop.florist
+--         WHERE florist_id = p_florist_id
+--     ) THEN
+--         RETURN 'Ошибка: флорист не найден';
+--     END IF;
+
+-- 	IF NOT EXISTS (
+--         SELECT 1
+--         FROM flowershop.bouquet
+--         WHERE bouquet_id = p_bouqet_id
+--     ) THEN
+--         RETURN 'Ошибка: букет не найден';
+--     END IF;
+
+-- 	IF NOT EXISTS (
+--         SELECT 1
+--         FROM flowershop.status
+--         WHERE status_id = p_status_id
+--     ) THEN
+--         RETURN 'Ошибка: такой статус не существует';
+--     END IF;
+
+-- 	IF p_delivery = TRUE THEN
+-- 		IF p_address_id IS NULL THEN
+-- 			RETURN 'Ошибка: укажите адрес доставки';
+--         END IF;
+
+-- 		IF p_delivery_time IS NULL THEN
+--         	RETURN 'Ошибка: укажите время доставки';
+--     	END IF;
+		
+--         IF NOT EXISTS (
+--             	SELECT 1
+--             	FROM flowershop.address
+--             	WHERE address_id = p_address_id
+--         	) THEN
+--             	RETURN 'Ошибка: адрес не найден';
+--         END IF;
+--     ELSE
+-- 		p_address_id := NULL;
+-- 		p_delivery_time := NULL;
+-- 	END IF;
+
+-- 	SELECT price
+-- 	INTO v_price
+-- 	FROM flowershop.bouquet
+-- 	WHERE bouquet_id = p_bouqet_id;
+
+-- 	INSERT INTO flowershop.orders(
+-- 		bouquet_id,
+--         client_id,
+--         florist_id,
+--         address_id,
+--         price,
+--         date,
+-- 		delivery,
+-- 		status_id,
+-- 		delivere_time
+-- 	)
+-- 	VALUES(
+-- 		p_bouqet_id,
+--         p_client_id,
+--         p_florist_id,
+--         p_address_id,
+--         v_price,
+--         CURRENT_DATE,
+-- 		p_delivery,
+-- 		p_status_id,
+-- 		p_delivery_time
+-- 	);
+-- 	RETURN 'Заказ успешно создан';
+-- END;
+-- $$;
+
+-- CREATE OR REPLACE FUNCTION flowershop.get_orders()
+-- RETURNS TABLE(
+--     first_name VARCHAR,
+--     last_name VARCHAR,
+--     middle_name VARCHAR,
+--     price NUMERIC(10,2),
+--     order_date DATE,
+--     status_text VARCHAR
+-- )
+-- LANGUAGE sql
+-- AS
+-- $$
+-- 	SELECT client.first_name, 
+-- 		client.last_name, 
+-- 		client.middle_name,
+-- 		orders.price, 
+-- 		orders.date, 
+-- 		status.status_text
+-- 	FROM flowershop.orders
+-- 	INNER JOIN flowershop.client ON orders.client_id = client.client_id
+-- 	INNER JOIN flowershop.status ON orders.status_id = status.status_id;
+-- $$;
+--SELECT * FROM flowershop.get_orders();
+
+-- INSERT INTO flowershop.florist (first_name, last_name, middle_name, phone)
+-- VALUES ('Анна', 'Иванова', 'Сергеевна', '79161234567');
+
+-- -- Для таблицы client
+-- INSERT INTO flowershop.client (first_name, last_name, middle_name, email, phone)
+-- VALUES ('Пётр', 'Петров', 'Алексеевич', 'petrov@example.com', '79261234567');
+
+-- -- Для таблицы bouquet
+-- INSERT INTO flowershop.bouquet (name, price, description)
+-- VALUES ('Весеннее настроение', 2500.00, 'Нежный букет из тюльпанов и ирисов с добавлением зелени');
+
+-- INSERT INTO flowershop.status (status_text)
+-- VALUES ('новый');
+--SELECT flowershop.create_order(1, 1, 1, 1, FALSE);
+
+-- CREATE OR REPLACE FUNCTION flowershop.find_client(
+--     p_first_name VARCHAR DEFAULT NULL,
+--     p_last_name VARCHAR DEFAULT NULL,
+--     p_phone VARCHAR DEFAULT NULL
+-- )
+-- RETURNS TABLE(
+--     client_id INTEGER,
+--     first_name VARCHAR,
+--     last_name VARCHAR,
+--     middle_name VARCHAR,
+--     email VARCHAR,
+--     phone VARCHAR
+-- )
+-- LANGUAGE sql
+-- AS
+-- $$
+-- SELECT
+--     c.client_id,
+--     c.first_name,
+--     c.last_name,
+--     c.middle_name,
+--     c.email,
+--     c.phone
+
+-- FROM flowershop.client c
+-- WHERE
+--     (p_first_name IS NULL
+--         OR LOWER(c.first_name)
+--         LIKE LOWER('%' || p_first_name || '%'))
+-- AND
+--     (p_last_name IS NULL
+--         OR LOWER(c.last_name)
+--         LIKE LOWER('%' || p_last_name || '%'))
+-- AND
+--     (p_phone IS NULL
+--         OR c.phone
+--         LIKE '%' || p_phone || '%');
+-- $$;
+
+-- INSERT INTO flowershop.flowers (name, price, quantity, img_path)
+-- VALUES ('Тюльпан', 120.32 , 55, '\ru\nosova\flowershop\images\tulip.jpg');
+--SELECT * FROM flowershop.flowers
+--SELECT * FROM flowershop.find_client('Олег')
+
+-- CREATE OR REPLACE FUNCTION flowershop.find_flowers(
+--     p_name VARCHAR DEFAULT NULL,
+--     p_price_min NUMERIC (10,2) DEFAULT NULL,
+-- 	p_price_max NUMERIC (10,2) DEFAULT NULL
+-- )
+-- RETURNS TABLE(
+--     flower_id INTEGER,
+--     name VARCHAR,
+--     price NUMERIC (10,2),
+--     quantity INTEGER,
+--     img_path VARCHAR
+-- )
+-- LANGUAGE sql
+-- AS
+-- $$
+-- SELECT
+--     flowers.flower_id,
+--     flowers.name,
+--     flowers.price,
+--     flowers.quantity,
+--     flowers.img_path
+
+-- FROM flowershop.flowers
+-- WHERE
+--     (p_name IS NULL
+--         OR LOWER(flowers.name)
+--         LIKE LOWER('%' || p_name || '%'))
+-- AND
+-- 	(p_price_min IS NULL OR flowers.price >= p_price_min)
+-- AND
+-- 	(p_price_max IS NULL OR flowers.price <= p_price_max)
+-- $$;
+
+--SELECT * FROM flowershop.bouquet_composition
+--SELECT * FROM flowershop.bouquet
+--SELECT * FROM flowershop.flowers
+--INSERT INTO flowershop.bouquet_composition VALUES(2, 3, 1, 100.67)
+-- INSERT INTO flowershop.address (city, street, house, entrance)
+-- VALUES
+--     ('Муром', 'Ленина', '15', '2'),
+--     ('Муром', 'Московская', '42', NULL),
+--     ('Муром', 'Кирова', '8', '1');
+--SELECT * FROM flowershop.orders
+-- SELECT flowershop.create_order(
+--     1,
+--     1,
+--     1,
+--     1,
+--     true,
+--     1,
+--     '12:00'
+-- );
+--ALTER ROLE florisr RENAME TO florist;
+
+-- CREATE OR REPLACE FUNCTION flowershop.find_bouquet(
+--     p_name VARCHAR DEFAULT NULL,
+--     p_price_min NUMERIC (10,2) DEFAULT NULL,
+-- 	p_price_max NUMERIC (10,2) DEFAULT NULL
+-- )
+-- RETURNS TABLE(
+--     bouquet_id INTEGER,
+--     name VARCHAR,
+--     price NUMERIC (10,2),
+--     description TEXT
+-- )
+-- LANGUAGE sql
+-- AS
+-- $$
+-- SELECT
+--     bouquet.bouquet_id,
+--     bouquet.name,
+--     bouquet.price,
+--     bouquet.description
+
+-- FROM flowershop.bouquet
+-- WHERE
+--     (p_name IS NULL
+--         OR LOWER(bouquet.name)
+--         LIKE LOWER('%' || p_name || '%'))
+-- AND
+-- 	(p_price_min IS NULL OR bouquet.price >= p_price_min)
+-- AND
+-- 	(p_price_max IS NULL OR bouquet.price <= p_price_max)
+-- $$;
+-- SELECT * FROM flowershop.find_bouquet('Любимый')
+
+-- CREATE OR REPLACE FUNCTION flowershop.find_order(
+--     p_first_name VARCHAR DEFAULT NULL,
+--     p_last_name VARCHAR DEFAULT NULL,
+--     p_status VARCHAR DEFAULT NULL,
+--     p_date DATE DEFAULT NULL
+-- )
+-- RETURNS TABLE(
+--     order_id INTEGER,
+
+--     client_id INTEGER,
+--     client_first_name VARCHAR,
+--     client_last_name VARCHAR,
+--     client_middle_name VARCHAR,
+--     client_email VARCHAR,
+--     client_phone VARCHAR,
+
+--     bouquet_id INTEGER,
+--     bouquet_name VARCHAR,
+--     bouquet_price NUMERIC(10,2),
+--     bouquet_description TEXT,
+
+--     florist_id INTEGER,
+--     florist_first_name VARCHAR,
+--     florist_last_name VARCHAR,
+--     florist_middle_name VARCHAR,
+--     florist_phone VARCHAR,
+
+--     address_id INTEGER,
+--     city VARCHAR,
+--     street VARCHAR,
+--     house VARCHAR,
+--     entrance VARCHAR,
+
+--     status_id INTEGER,
+--     status_text VARCHAR,
+
+--     order_price NUMERIC(10,2),
+--     order_date DATE,
+--     delivery BOOLEAN,
+--     delivere_time TIME
+-- )
+-- LANGUAGE sql
+-- AS
+-- $$
+-- SELECT
+--     o.order_id,
+
+--     c.client_id,
+--     c.first_name,
+--     c.last_name,
+--     c.middle_name,
+--     c.email,
+--     c.phone,
+
+--     b.bouquet_id,
+--     b.name,
+--     b.price,
+--     b.description,
+
+--     f.florist_id,
+--     f.first_name,
+--     f.last_name,
+--     f.middle_name,
+--     f.phone,
+
+--     a.address_id,
+--     a.city,
+--     a.street,
+--     a.house,
+--     a.entrance,
+
+--     s.status_id,
+--     s.status_text,
+
+--     o.price,
+--     o.date,
+--     o.delivery,
+--     o.delivere_time
+
+-- FROM flowershop.orders o
+-- JOIN flowershop.client c
+--     ON o.client_id = c.client_id
+-- JOIN flowershop.bouquet b
+--     ON o.bouquet_id = b.bouquet_id
+-- JOIN flowershop.florist f
+--     ON o.florist_id = f.florist_id
+-- JOIN flowershop.address a
+--     ON o.address_id = a.address_id
+-- JOIN flowershop.status s
+--     ON o.status_id = s.status_id
+
+-- WHERE
+--     (p_first_name IS NULL
+--         OR LOWER(c.first_name)
+--         LIKE LOWER('%' || p_first_name || '%'))
+-- AND
+--     (p_last_name IS NULL
+--         OR LOWER(c.last_name)
+--         LIKE LOWER('%' || p_last_name || '%'))
+-- AND
+--     (p_status IS NULL
+--         OR LOWER(s.status_text)
+--         LIKE LOWER('%' || p_status || '%'))
+-- AND
+--     (p_date IS NULL
+--         OR o.date = p_date);
+-- $$;
+
+-- CREATE TABLE flowershop.bouquet_audit (
+--     audit_id SERIAL PRIMARY KEY,
+--     operation CHAR(1) NOT NULL,
+--     operation_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+-- );
+
+-- CREATE OR REPLACE FUNCTION flowershop.bouquet_audit_log()
+-- RETURNS TRIGGER AS $$
+-- BEGIN
+--     IF TG_OP = 'INSERT' THEN
+--         INSERT INTO flowershop.bouquet_audit (operation, operation_time) VALUES ('I', CURRENT_TIMESTAMP);
+--     ELSIF TG_OP = 'UPDATE' THEN
+--         INSERT INTO flowershop.bouquet_audit (operation, operation_time) VALUES ('U', CURRENT_TIMESTAMP);
+--     ELSIF TG_OP = 'DELETE' THEN
+--         INSERT INTO flowershop.bouquet_audit (operation, operation_time) VALUES ('D', CURRENT_TIMESTAMP);
+--     END IF;
+--     RETURN NULL;
+-- END;
+-- $$ LANGUAGE plpgsql;
+
+-- CREATE TRIGGER bouquet_audit_trigger
+-- AFTER INSERT OR UPDATE OR DELETE ON flowershop.bouquet
+-- FOR EACH ROW
+-- EXECUTE FUNCTION flowershop.bouquet_audit_log();
+
+
+-- CREATE TABLE flowershop.flowers_audit (
+--     audit_id SERIAL PRIMARY KEY,
+--     operation CHAR(1) NOT NULL,
+--     operation_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+-- );
+
+-- CREATE OR REPLACE FUNCTION flowershop.flowers_audit_log()
+-- RETURNS TRIGGER AS $$
+-- BEGIN
+--     IF TG_OP = 'INSERT' THEN
+--         INSERT INTO flowershop.flowers_audit (operation, operation_time) VALUES ('I', CURRENT_TIMESTAMP);
+--     ELSIF TG_OP = 'UPDATE' THEN
+--         INSERT INTO flowershop.flowers_audit (operation, operation_time) VALUES ('U', CURRENT_TIMESTAMP);
+--     ELSIF TG_OP = 'DELETE' THEN
+--         INSERT INTO flowershop.flowers_audit (operation, operation_time) VALUES ('D', CURRENT_TIMESTAMP);
+--     END IF;
+--     RETURN NULL;
+-- END;
+-- $$ LANGUAGE plpgsql;
+-- CREATE TRIGGER flowers_audit_trigger
+-- AFTER INSERT OR UPDATE OR DELETE ON flowershop.flowers
+-- FOR EACH ROW
+-- EXECUTE FUNCTION flowershop.flowers_audit_log();
+
+-- CREATE TABLE flowershop.client_audit (
+--     audit_id SERIAL PRIMARY KEY,
+--     operation CHAR(1) NOT NULL,
+--     operation_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+-- );
+-- CREATE OR REPLACE FUNCTION flowershop.client_audit_log()
+-- RETURNS TRIGGER AS $$
+-- BEGIN
+--     IF TG_OP = 'INSERT' THEN
+--         INSERT INTO flowershop.client_audit (operation, operation_time) VALUES ('I', CURRENT_TIMESTAMP);
+--     ELSIF TG_OP = 'UPDATE' THEN
+--         INSERT INTO flowershop.client_audit (operation, operation_time) VALUES ('U', CURRENT_TIMESTAMP);
+--     ELSIF TG_OP = 'DELETE' THEN
+--         INSERT INTO flowershop.client_audit (operation, operation_time) VALUES ('D', CURRENT_TIMESTAMP);
+--     END IF;
+--     RETURN NULL;
+-- END;
+-- $$ LANGUAGE plpgsql;
+-- CREATE TRIGGER client_audit_trigger
+-- AFTER INSERT OR UPDATE OR DELETE ON flowershop.client
+-- FOR EACH ROW
+-- EXECUTE FUNCTION flowershop.client_audit_log();
+
+-- CREATE TABLE flowershop.orders_audit (
+--     audit_id SERIAL PRIMARY KEY,
+--     operation CHAR(1) NOT NULL,
+--     operation_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+-- );
+-- CREATE OR REPLACE FUNCTION flowershop.orders_audit_log()
+-- RETURNS TRIGGER AS $$
+-- BEGIN
+--     IF TG_OP = 'INSERT' THEN
+--         INSERT INTO flowershop.orders_audit (operation, operation_time) VALUES ('I', CURRENT_TIMESTAMP);
+--     ELSIF TG_OP = 'UPDATE' THEN
+--         INSERT INTO flowershop.orders_audit (operation, operation_time) VALUES ('U', CURRENT_TIMESTAMP);
+--     ELSIF TG_OP = 'DELETE' THEN
+--         INSERT INTO flowershop.orders_audit (operation, operation_time) VALUES ('D', CURRENT_TIMESTAMP);
+--     END IF;
+--     RETURN NULL;
+-- END;
+-- $$ LANGUAGE plpgsql;
+-- CREATE TRIGGER orders_audit_trigger
+-- AFTER INSERT OR UPDATE OR DELETE ON flowershop.orders
+-- FOR EACH ROW
+-- EXECUTE FUNCTION flowershop.orders_audit_log();
+
+
+-- CREATE TABLE flowershop.address_audit (
+--     audit_id SERIAL PRIMARY KEY,
+--     operation CHAR(1) NOT NULL,
+--     operation_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+-- );
+-- CREATE OR REPLACE FUNCTION flowershop.address_audit_log()
+-- RETURNS TRIGGER AS $$
+-- BEGIN
+--     IF TG_OP = 'INSERT' THEN
+--         INSERT INTO flowershop.address_audit (operation, operation_time) VALUES ('I', CURRENT_TIMESTAMP);
+--     ELSIF TG_OP = 'UPDATE' THEN
+--         INSERT INTO flowershop.address_audit (operation, operation_time) VALUES ('U', CURRENT_TIMESTAMP);
+--     ELSIF TG_OP = 'DELETE' THEN
+--         INSERT INTO flowershop.address_audit (operation, operation_time) VALUES ('D', CURRENT_TIMESTAMP);
+--     END IF;
+--     RETURN NULL;
+-- END;
+-- $$ LANGUAGE plpgsql;
+-- CREATE TRIGGER address_audit_trigger
+-- AFTER INSERT OR UPDATE OR DELETE ON flowershop.address
+-- FOR EACH ROW
+-- EXECUTE FUNCTION flowershop.address_audit_log();
+-- SELECT * FROM flowershop.flowers_audit

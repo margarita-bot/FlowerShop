@@ -1,0 +1,51 @@
+CREATE OR REPLACE FUNCTION flowershop.generate_random_clients(n integer)
+RETURNS void AS $$
+DECLARE
+    first_names text[] := ARRAY['Иван', 'Александр', 'Дмитрий', 'Максим', 'Сергей', 'Андрей', 'Алексей', 'Владимир', 'Евгений', 'Николай', 'Михаил', 'Павел', 'Роман', 'Олег', 'Юрий', 'Анна', 'Елена', 'Мария', 'Ольга', 'Татьяна', 'Наталья', 'Ирина', 'Светлана', 'Ксения', 'Виктория', 'Анастасия', 'Екатерина', 'Людмила', 'Валентина', 'Галина'];
+    last_names text[] := ARRAY['Иванов', 'Петров', 'Сидоров', 'Смирнов', 'Кузнецов', 'Попов', 'Васильев', 'Соколов', 'Михайлов', 'Федоров', 'Морозов', 'Волков', 'Алексеев', 'Лебедев', 'Семенов', 'Новиков', 'Козлов', 'Орлов', 'Зайцев', 'Соловьев'];
+    middle_names text[] := ARRAY['Алексеевич', 'Владимирович', 'Дмитриевич', 'Сергеевич', 'Александрович', 'Петрович', 'Иванович', 'Николаевич', 'Андреевич', 'Михайлович', 'Алексеевна', 'Владимировна', 'Дмитриевна', 'Сергеевна', 'Александровна', 'Петровна', 'Ивановна', 'Николаевна', 'Андреевна', 'Михайловна'];
+    email_domains text[] := ARRAY['mail.ru', 'gmail.com', 'yandex.ru'];
+    i integer;
+    rand_first text;
+    rand_last text;
+    rand_middle text;
+    rand_email varchar(100);
+    rand_phone varchar(12);
+    is_male boolean;
+BEGIN
+    FOR i IN 1..n LOOP
+        -- Определяем пол (50/50)
+        is_male := (random() > 0.5);
+        
+        -- Выбираем случайные ФИО с учетом пола
+        IF is_male THEN
+            rand_first := first_names[floor(random() * (array_length(first_names, 1) - 15) + 1)];  -- мужские имена
+            rand_middle := middle_names[floor(random() * 10) + 1];  -- мужские отчества
+        ELSE
+            rand_first := first_names[floor(random() * (array_length(first_names, 1) - 15) + 16)];  -- женские имена
+            rand_middle := middle_names[floor(random() * 10) + 11];  -- женские отчества
+        END IF;
+        
+        rand_last := last_names[floor(random() * array_length(last_names, 1)) + 1];
+        
+        -- Генерируем email (латиницей)
+        rand_email := lower(regexp_replace(rand_last, '[а-я]', 
+            CASE floor(random() * 26)::int
+                WHEN 0 THEN 'a' WHEN 1 THEN 'b' WHEN 2 THEN 'c' WHEN 3 THEN 'd' WHEN 4 THEN 'e'
+                WHEN 5 THEN 'f' WHEN 6 THEN 'g' WHEN 7 THEN 'h' WHEN 8 THEN 'i' WHEN 9 THEN 'j'
+                WHEN 10 THEN 'k' WHEN 11 THEN 'l' WHEN 12 THEN 'm' WHEN 13 THEN 'n' WHEN 14 THEN 'o'
+                WHEN 15 THEN 'p' WHEN 16 THEN 'q' WHEN 17 THEN 'r' WHEN 18 THEN 's' WHEN 19 THEN 't'
+                WHEN 20 THEN 'u' WHEN 21 THEN 'v' WHEN 22 THEN 'w' WHEN 23 THEN 'x' WHEN 24 THEN 'y'
+                ELSE 'z'
+            END, 'g')) || '_' || floor(random() * 1000)::text || '@' || email_domains[floor(random() * array_length(email_domains, 1)) + 1];
+        
+        -- Генерируем телефон (10 цифр)
+        rand_phone := '79' || floor(random() * 1000000000)::text;
+        rand_phone := lpad(rand_phone, 11, '7');
+        
+        -- Вставляем клиента
+        INSERT INTO flowershop.client (first_name, last_name, middle_name, email, phone)
+        VALUES (rand_first, rand_last, rand_middle, rand_email, rand_phone);
+    END LOOP;
+END;
+$$ LANGUAGE plpgsql;
