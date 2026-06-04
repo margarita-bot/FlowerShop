@@ -6,5 +6,5 @@ import java.util.List;
 public interface AddressDaoImpl{
     List<Address> find();
     Address insert (Address address);
-
+    List<Address> findAddress(String street, String house);
 }

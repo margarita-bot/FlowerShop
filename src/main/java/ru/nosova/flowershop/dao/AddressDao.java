@@ -36,6 +36,31 @@ public class AddressDao implements AddressDaoImpl{
     }
 
     @Override
+    public List<Address> findAddress(String street, String house) {
+        String query = sql.getQuery("address.find");
+        List<Address> list = new ArrayList<>();
+        try (PreparedStatement statement =
+                     DButils.getConnection().prepareStatement(query)) {
+            statement.setString(1, street);
+            statement.setString(2, house);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Address address = Address.builder()
+                        .address_id(rs.getLong("address_id"))
+                        .city(rs.getString("city"))
+                        .street(rs.getString("street"))
+                        .house(rs.getString("house"))
+                        .entrance(rs.getString("entrance"))
+                        .build();
+                list.add(address);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+
+    @Override
     public Address insert(Address address) {
         String query = sql.getQuery("address.insert");
         try (PreparedStatement statement = DButils.getConnection().prepareStatement(query)){

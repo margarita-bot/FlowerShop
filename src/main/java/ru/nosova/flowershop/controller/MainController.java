@@ -8,13 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ru.nosova.flowershop.MainApplication;
@@ -26,10 +20,7 @@ import ru.nosova.flowershop.utils.LocaleSettings;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class MainController {
 
@@ -145,19 +136,53 @@ public class MainController {
         findDate.clear();
     }
 
-    @FXML
-    void clikClear(ActionEvent event) {
 
-    }
 
     @FXML
     void clikDelete(ActionEvent event) {
+        Orders orderD =
+                TableOrder.getSelectionModel().getSelectedItem();
 
+        if (orderD != null) {
+
+            Alert confirm =
+                    new Alert(Alert.AlertType.CONFIRMATION);
+
+            confirm.setTitle("Подтверждение удаления");
+            confirm.setHeaderText("Удаление заказа");
+            confirm.setContentText(
+                    "Вы действительно хотите удалить заказ №"
+                            + orderD.getOrder_id() + "?"
+            );
+
+            Optional<ButtonType> result = confirm.showAndWait();
+            if (result.isPresent()
+                    && result.get() == ButtonType.OK) {
+
+                ordersDaoImpl.delete(orderD);
+                orders.remove(orderD);
+                Alert success = new Alert(Alert.AlertType.INFORMATION);
+                success.setTitle("Удаление");
+                success.setHeaderText(null);
+                success.setContentText(
+                        "Заказ успешно удален."
+                );
+                success.showAndWait();
+            }
+
+        } else {
+
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Удаление заказа");
+            alert.setHeaderText(null);
+            alert.setContentText(
+                    "Выберите заказ."
+            );
+
+            alert.showAndWait();
+        }
     }
 
-    @FXML
-    void clikEdit(ActionEvent event) {
-    }
 
     @FXML
     void clikExit() {

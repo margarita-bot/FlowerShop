@@ -9,8 +9,6 @@ import java.util.List;
 public interface OrdersDaoImpl<T, ID> {
     List<Orders> find();
     Orders createOrders(Long clientID, Long floristId, Long bouquetId, Boolean delivery, Long addressId, Long statusId, Time deliveryTime);
-    Orders insert(Orders orders);
-    Orders update (Orders orders);
     void delete (Orders orders);
     void deleteID (ID id);
     List<Orders> getOrders();

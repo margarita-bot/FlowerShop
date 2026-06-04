@@ -148,23 +148,19 @@ public class OrdersDao implements OrdersDaoImpl<Orders, Long> {
         return List.of();
     }
 
-    @Override
-    public Orders insert(Orders client) {
-        return null;
-    }
 
     @Override
-    public Orders update(Orders client) {
-        return null;
+    public void delete(Orders orders) {
+        deleteID(orders.getOrder_id());
     }
-
-    @Override
-    public void delete(Orders client) {
-
-    }
-
     @Override
     public void deleteID(Long aLong) {
-
+        String query = sql.getQuery("order.delete");
+        try (PreparedStatement statement = DButils.getConnection().prepareStatement(query)) {
+            statement.setLong(1, aLong);
+            statement.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

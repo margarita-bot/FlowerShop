@@ -1,2 +1,24 @@
 04.06.2026 00:08:58.380 [JavaFX Application Thread] INFO  r.n.f.utils.DBHelper - Подключение к БД установлено пользователем florist
 04.06.2026 04:09:24.240 [JavaFX Application Thread] INFO  r.n.f.utils.DBHelper - Подключение к БД установлено пользователем florist
+04.06.2026 10:31:38.219 [JavaFX Application Thread] INFO  r.n.f.utils.DBHelper - Подключение к БД установлено пользователем florist
+04.06.2026 10:32:36.202 [JavaFX Application Thread] INFO  r.n.f.c.ClientController - Open window: /ru/nosova/flowershop/FlowerShop-view.fxml
+04.06.2026 10:34:42.252 [main] ERROR r.n.f.utils.DBHelper - config.properties не найден
+04.06.2026 10:35:13.646 [JavaFX Application Thread] INFO  r.n.f.utils.DBHelper - Подключение к БД установлено пользователем florist
+04.06.2026 10:35:33.037 [JavaFX Application Thread] INFO  r.n.f.utils.DBHelper - Подключение к БД установлено пользователем florist
+04.06.2026 10:35:38.322 [JavaFX Application Thread] INFO  r.n.f.utils.DBHelper - Соединение с БД закрыто
+04.06.2026 10:35:38.400 [JavaFX Application Thread] INFO  r.n.f.utils.DBHelper - Подключение к БД установлено пользователем florist
+04.06.2026 10:35:47.887 [JavaFX Application Thread] INFO  r.n.f.utils.DBHelper - Соединение с БД закрыто
+04.06.2026 10:35:47.958 [JavaFX Application Thread] INFO  r.n.f.utils.DBHelper - Подключение к БД установлено пользователем florist
+04.06.2026 10:40:46.485 [JavaFX Application Thread] INFO  r.n.f.utils.DBHelper - Подключение к БД установлено пользователем florist
+04.06.2026 10:40:51.783 [JavaFX Application Thread] INFO  r.n.f.utils.DBHelper - Соединение с БД закрыто
+04.06.2026 10:40:51.859 [JavaFX Application Thread] INFO  r.n.f.utils.DBHelper - Подключение к БД установлено пользователем florist
+04.06.2026 10:41:01.271 [JavaFX Application Thread] INFO  r.n.f.utils.DBHelper - Соединение с БД закрыто
+04.06.2026 10:41:01.335 [JavaFX Application Thread] INFO  r.n.f.utils.DBHelper - Подключение к БД установлено пользователем florist
+04.06.2026 14:51:48.519 [JavaFX Application Thread] INFO  r.n.f.utils.DBHelper - Подключение к БД установлено пользователем florist
+04.06.2026 14:51:53.163 [JavaFX Application Thread] INFO  r.n.f.utils.DBHelper - Соединение с БД закрыто
+04.06.2026 14:51:53.224 [JavaFX Application Thread] INFO  r.n.f.utils.DBHelper - Подключение к БД установлено пользователем florist
+04.06.2026 14:52:02.090 [JavaFX Application Thread] INFO  r.n.f.utils.DBHelper - Соединение с БД закрыто
+04.06.2026 14:52:02.138 [JavaFX Application Thread] INFO  r.n.f.utils.DBHelper - Подключение к БД установлено пользователем florist
+04.06.2026 14:52:33.643 [JavaFX Application Thread] INFO  r.n.f.utils.DBHelper - Подключение к БД установлено пользователем florist
+04.06.2026 15:04:09.018 [JavaFX Application Thread] INFO  r.n.f.utils.DBHelper - Подключение к БД установлено пользователем florist
+04.06.2026 15:32:41.916 [JavaFX Application Thread] INFO  r.n.f.utils.DBHelper - Подключение к БД установлено пользователем florist

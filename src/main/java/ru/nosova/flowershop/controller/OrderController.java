@@ -149,6 +149,18 @@ public class OrderController {
     @FXML
     void onAddressFind(ActionEvent event) {
 
+            String street = AddressStretFind.getText().trim();
+            String house = AddressHomeFind.getText().trim();
+
+            if (street.isBlank() && house.isBlank()) {
+                idErrorsFindAddress.setText("Введите хотя бы один параметр поиска");
+                return;
+            }
+            addresses.clear();
+            List<Address> find = addressDao.findAddress(street, house);addresses.addAll(find);
+            AddressStretFind.clear();
+            AddressHomeFind.clear();
+            idErrorsFindAddress.setText("");
     }
 
     @FXML
