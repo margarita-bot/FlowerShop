@@ -14,6 +14,11 @@ import java.util.List;
 public class ClientDao implements ClientDaoImpl<Client, Long>{
     private final SQLStatements sql = new SQLStatements();
 
+    /**
+     * Метод получения списка клиентов
+     * Данный метод делает запрос в Базу Данных и получает набор строк
+     * @return список клиентов
+     */
     @Override
     public List<Client> getClient() {
         String query = sql.getQuery("client.select");
@@ -37,10 +42,16 @@ public class ClientDao implements ClientDaoImpl<Client, Long>{
         return list;
     }
 
+    /**
+     * Метод добавления клиента
+     * Данный метод позволяет добавить в Базу Данных новую запись клиента
+     * @param client - экземпляр, который будет добавлен в базу
+     * @return экземпляр добавленного клиента
+     */
         @Override
     public Client insert(Client client) {
         String query = sql.getQuery("client.insert");
-        try (PreparedStatement statement = DButils.getConnection().prepareStatement(query, new String[] {"client_id"})){
+        try (PreparedStatement statement = DButils.getConnection().prepareStatement(query)){
             statement.setString(1, client.getFirstName());
             statement.setString(2, client.getLastName());
             statement.setString(3, client.getMiddleName());

@@ -123,7 +123,7 @@ public class MainController {
         String lastname = findLastName.getText().trim();
         String status = findStatus.getText().trim();
         LocalDate date = null;
-        if (name.isBlank() || lastname.isBlank() || status.isBlank()){
+        if (name.isBlank() && lastname.isBlank() && status.isBlank()){
             idErrors.setText("Напишите хотя бы один параметр поиска.");
             return;
         }

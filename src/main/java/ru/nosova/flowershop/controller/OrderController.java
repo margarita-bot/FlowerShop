@@ -12,6 +12,7 @@ import lombok.Setter;
 import ru.nosova.flowershop.dao.*;
 import ru.nosova.flowershop.dao.impl.*;
 import ru.nosova.flowershop.model.*;
+import ru.nosova.flowershop.utils.Validation;
 
 import java.sql.Time;
 import java.util.List;
@@ -322,6 +323,17 @@ public class OrderController {
         String street = addAddressStret.getText().trim();
         String home = addAddressHome.getText().trim();
         String entrance = addAddressEntrance.getText().trim();
+        if(city.isBlank() && street.isBlank() && home.isBlank()){
+            idErrorsFindAddress.setText("Заполните обязательные поля");
+            return;
+        }
+        if (!Validation.isValidName(city)){
+            idErrorsFindAddress.setText("Проверьте название города");
+            return;
+        }
+        if(!Validation.isValidName(street)){
+            idErrorsFindAddress.setText("Проверьте название улицы");
+        }
         if(entrance.isBlank()){
             entrance = null;
         }
